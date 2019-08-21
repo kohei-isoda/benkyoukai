@@ -1,14 +1,15 @@
 class TweetsController < ApplicationController
 
-  before_action :redirect_to_index, :except => [:index]
+  before_action :redirect_to_index, :except => [:index, :show]
 
   def index
-    @tweets = Tweet.includes(:user).page(params[:page]).per(5).order("created_at DESC")
+    # @tweets = Tweet.includes(:user).page(params[:page]).per(5).order("created_at DESC")
+    @tweets = Tweet.find(1)
   end
 
   def show
     @tweet = Tweet.find(params[:id])
-    @comments = @tweets.comments.includes(:user)
+    @comments = @tweet.comments.includes(:user)
   end
 
   def new
@@ -34,7 +35,7 @@ class TweetsController < ApplicationController
 
   private
   def tweet_params
-    params.permit(:images, :text)
+    params.permit(:image, :text)
   end
 
   def id_params
